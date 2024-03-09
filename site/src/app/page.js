@@ -9,7 +9,8 @@ export default function Home() {
       <div className=" mx-32  h-full  rounded-xl flex justify-center " >
         
         <div className="m-20 rounded-xl w-1/2 flex flex-col justify-evenly border-[#55b424] items-center bg-opacity-20 rounded-lg shadow-md backdrop-blur-md border border-opacity-30 text-[#000000] ">
-          <p className="text-center text-white ">Logo</p>
+          <p className="text-center text-white ">vmkube</p>
+          <w3m-button />
           <RadioGroup
       label="What do you want to be"
       defaultValue="client"

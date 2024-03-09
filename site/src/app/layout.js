@@ -3,7 +3,7 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
+import { Web3Modal, Web3ModalProvider } from "../context/Web3Modal";
 import {NextUIProvider} from "@nextui-org/react";
 
 export const metadata = {
@@ -15,7 +15,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+
+        <Web3ModalProvider>{children}</Web3ModalProvider>
         </body>
     </html>
   );
