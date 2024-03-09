@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import { Web3Modal, Web3ModalProvider } from '../context/Web3Modal'
+
 const inter = Inter({ subsets: ["latin"] });
 
 import  Providers  from "./provider";
@@ -15,7 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          {children}
+          <Web3ModalProvider>{children}</Web3ModalProvider>
           </Providers>
         </body>
     </html>

@@ -8,6 +8,7 @@ export default function Home() {
         <div className="w-1/2 "></div>
         <div className="w-1/2 flex flex-col justify-evenly items-center bg-[#A7A1BB] text-[#000000] ">
           <p className="text-center">Logo</p>
+          <w3m-button />
           <RadioGroup
       label="What do you want to be"
         >
