@@ -1,0 +1,136 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "NoNewClientFound",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "client",
+				"type": "address"
+			}
+		],
+		"name": "ProviderNotAssigned",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getClientData",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "clientAdress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "vcpu",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "ram",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "storageSize",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "rsaPublicKey",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "providerIPAddress",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ClientDataRegistry.ClientData[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_client",
+				"type": "address"
+			}
+		],
+		"name": "getProviderIPAddress",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_vcpu",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ram",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_storageSize",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_rsaPublicKey",
+				"type": "string"
+			}
+		],
+		"name": "registerClient",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_client",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_ipAddress",
+				"type": "string"
+			}
+		],
+		"name": "updateProviderIPAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

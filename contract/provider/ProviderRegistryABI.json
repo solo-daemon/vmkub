@@ -1,0 +1,141 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "provider",
+				"type": "address"
+			}
+		],
+		"name": "ClientPublicKeyNotAssigned",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "NoNewProviderFound",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_provider",
+				"type": "address"
+			}
+		],
+		"name": "getClientPublicKey",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getProviderInformation",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "providerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "vcpu",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "ram",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "storageSize",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "clientPublicKey",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "ipAddress",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ProviderRegistry.Provider[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_vcpu",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_ram",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_storageSize",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_clientPublicKey",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_ipAddress",
+				"type": "string"
+			}
+		],
+		"name": "registerProvider",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_provider",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_clientPublicKey",
+				"type": "string"
+			}
+		],
+		"name": "updateClientPublicKey",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
