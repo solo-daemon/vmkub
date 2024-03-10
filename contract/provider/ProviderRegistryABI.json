@@ -106,11 +106,6 @@
 			},
 			{
 				"internalType": "string",
-				"name": "_clientPublicKey",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
 				"name": "_ipAddress",
 				"type": "string"
 			}

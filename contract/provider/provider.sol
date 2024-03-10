@@ -24,7 +24,6 @@ contract ProviderRegistry {
         uint _vcpu,
         uint _ram,
         uint _storageSize,
-        string memory _clientPublicKey,
         string memory _ipAddress
     ) public {
         require(providers[msg.sender].timestamp == 0, "Provider already registered");
@@ -34,7 +33,7 @@ contract ProviderRegistry {
             vcpu: _vcpu,
             ram: _ram,
             storageSize: _storageSize,
-            clientPublicKey: _clientPublicKey,
+            clientPublicKey: "",
             ipAddress: _ipAddress,
             timestamp: block.timestamp // Store current block timestamp
         });
