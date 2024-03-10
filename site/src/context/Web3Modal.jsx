@@ -8,9 +8,9 @@ const projectId = 'f9f15d874a4c173cb17ce6e7eddf5948'
 // 2. Set chains
 const mainnet = {
   chainId: 11155111,
-  name: 'Sepolia test network',
-  currency: 'SepoliaETH',
-  explorerUrl: 'https://sepolia.etherscan.io/',
+  name: 'homestead',
+  currency: 'ETH',
+  explorerUrl: 'https://etherscan.io/',
   rpcUrl: 'https://cloudflare-eth.com'
 }
 
