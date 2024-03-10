@@ -10,4 +10,6 @@ anyhow = "1.0.80"
 clap = {version= "4.5.2", features = ["derive"]}
 clap_derive = "4.5.0"
 dialoguer = "0.11.0"
+io = "0.0.2"
+ssh = "0.1.4"
 ssh2 = "0.9.4"
