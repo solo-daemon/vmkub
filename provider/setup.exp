@@ -1,0 +1,12 @@
+#!/usr/bin/expect
+
+
+set RAM [lindex $argv 0]
+set CPU [lindex $argv 1]
+set STORAGE [lindex $argv 2]
+set ISO [lindex $argv 3]
+
+spawn qemu-system-x86_64 -enable-kvm -boot menu=off -cpu host -drive file=host.img -cdrom /home/utkarsh/Downloads/alpine-virt-3.19.1-x86_64.iso -m 2G -smp 2 -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:22 -nographic
+
+expect "localhost login: "
+send "root\n"

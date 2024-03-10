@@ -8,3 +8,5 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.2", features = ["cargo"] }
+expectrl = "0.7.1"
+kademlia_dht = { path = "../dht/" }
