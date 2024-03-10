@@ -50,10 +50,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     io::stdin()
         .read_line(&mut wall_addr)
         .expect("Failed to read line");
-
-    // Trim the newline character at the end if you need to
-    let wall_addr = wall_addr.trim();
-
     let handle = thread::spawn(move || {
         println!("Starting vm...");
         let specifications =

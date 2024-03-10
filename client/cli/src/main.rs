@@ -60,8 +60,8 @@ async fn main() {
     match best_fit {
         Some(val) => {
             println!(
-                "You have to pay some eth to wallet address of the client {:?}",
-                val
+                "You have to pay some 0.005 Sepolia eth to wallet address of the client {:?}",
+                val.wallet_address
             );
             let mut transactionId = String::new();
             match io::stdin().read_line(&mut transactionId) {
@@ -75,6 +75,9 @@ async fn main() {
                                 println!("Run the command:");
                                 println!("ssh root@{} -p 5555", val.ip);
                                 println!("Enjoy!! the vmkube exprience");
+                            } else {
+                                println!("Payment Not Recieved!!");
+                                std::process::exit(1);
                             }
                         }
                         Err(e) => {

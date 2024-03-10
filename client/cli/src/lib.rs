@@ -8,7 +8,8 @@ pub fn add_client_to_network(storage: u32, ram: u32, cpu_cores: u32) -> Protocol
         ram: 8,
         cpu_cores: 2,
         arch_images: 0,
-        ip: "10.11.1.59".to_string(),
+        ip: "10.11.0.207".to_string(),
+        wallet_address: "1".to_string(),
     };
     let nodeInfo = NodeInfo {
         storage,
@@ -16,6 +17,7 @@ pub fn add_client_to_network(storage: u32, ram: u32, cpu_cores: u32) -> Protocol
         cpu_cores,
         arch_images: 0,
         ip: utils::get_local_ip().unwrap(),
+        wallet_address: "sup_nigga".to_string(),
     };
 
     let root = Node::new(rootNodeInfo.ip.clone(), 7999, rootNodeInfo.clone());
