@@ -1,11 +1,7 @@
-use kademlia_dht::attributes::{
-    self, get_attribute_key, get_equal_arm_image_enums, get_higher_ram_enums,
-    get_higher_storage_enums, get_higher_virtual_cpu_enums, get_virtual_cpu_enum, Query, Storage,
-};
-use kademlia_dht::node::{self, Node, NodeInfo};
+
+use kademlia_dht::node::{ Node, NodeInfo};
 use kademlia_dht::protocol::Protocol;
 use kademlia_dht::utils;
-use std::error::Error;
 use std::{thread, time};
 
 pub fn add_provider_to_network(storage: u32, ram: u32, cpu_cores: u32, wallet_addr: String) {

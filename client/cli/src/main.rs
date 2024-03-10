@@ -1,9 +1,15 @@
 use console::Emoji;
 use kademlia_dht::attributes::Query;
-use std::io;
+use std::{
+    error,
+    io::{self, stdin},
+};
+use tokio;
 static SPARKLE: Emoji<'_, '_> = Emoji("✨ ", ":-)");
 static WORLD: Emoji<'_, '_> = Emoji("🌐", "");
-pub mod lib;
+mod api;
+mod config_parser;
+mod lib;
 
 fn get_integer_input() -> u32 {
     loop {
@@ -21,7 +27,8 @@ fn get_integer_input() -> u32 {
     }
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     println!("Welcome to Our Network! {}", WORLD);
     println!(
         "{} Thank you for considering our network for your requirements.",
@@ -50,7 +57,42 @@ fn main() {
         arch_images: interface.node.info.arch_images,
     };
     let best_fit = interface.get_best_fit(req);
-    dbg!(best_fit);
+    match best_fit {
+        Some(val) => {
+            println!(
+                "You have to pay some eth to wallet address of the client {:?}",
+                val
+            );
+            let mut transactionId = String::new();
+            match io::stdin().read_line(&mut transactionId) {
+                Ok(_) => {
+                    let check = api::verify_payment(&transactionId).await;
+                    match check {
+                        Ok(b) => {
+                            if (b) {
+                                println!("Payment Recieved");
+                                println!("Here is your ip to ssh {}", val.ip);
+                                println!("Run the command:");
+                                println!("ssh root@{} -p 5555", val.ip);
+                                println!("Enjoy!! the vmkube exprience");
+                            }
+                        }
+                        Err(e) => {
+                            eprint!("Error cannot check transaction {}", e);
+                            std::process::exit(1);
+                        }
+                    }
+                }
+                Err(error) => {
+                    eprintln!("Error reading input: {}", error);
+                    std::process::exit(1);
+                }
+            }
+        }
+        None => {
+            println!("Sorry we weren't able to find a best fit. Lower the specs a little!!");
+        }
+    }
     println!(
         "You're now equipped to access and benefit from our network resources. Welcome aboard!"
     );

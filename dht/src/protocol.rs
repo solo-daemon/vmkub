@@ -1,10 +1,12 @@
-
 use crate::attributes::get_attribute_key;
 use crate::attributes::get_attribute_key_from_enum;
 use crate::attributes::DHTValueStruct;
 use crate::attributes::Query;
 use crate::key::Key;
-use attributes::{ get_equal_arm_image_enums, get_higher_ram_enums, get_higher_storage_enums, get_higher_virtual_cpu_enums, get_virtual_cpu_enum,  Storage};
+use attributes::{
+    get_equal_arm_image_enums, get_higher_ram_enums, get_higher_storage_enums,
+    get_higher_virtual_cpu_enums, get_virtual_cpu_enum, Storage,
+};
 use std::sync::{Arc, Mutex};
 use std::thread;
 // use crate::node::NodeInfo;
@@ -13,17 +15,17 @@ use super::network;
 use super::node::Node;
 use super::node::NodeInfo;
 
+use super::attributes;
 use super::routing;
 use super::utils;
-use super::attributes;
-use std::rc::Rc;
 use std::cell::RefCell;
+use std::rc::Rc;
 
 use crossbeam_channel;
 use std::collections::{BinaryHeap, HashMap, HashSet};
 use std::sync::mpsc;
 
-#[derive(Debug,Clone)]
+#[derive(Debug, Clone)]
 pub struct SharedBucket {
     pub bucket: HashSet<NodeInfo>,
 }
@@ -63,8 +65,7 @@ pub fn is_node_greater_than_query(node_info: NodeInfo, query: Query) -> bool {
 }
 
 impl Protocol {
-    pub fn new(ip: String, port: u16, info : NodeInfo, bootstrap: Option<Node>) -> Self {
-        
+    pub fn new(ip: String, port: u16, info: NodeInfo, bootstrap: Option<Node>) -> Self {
         let node = Node::new(ip, port, info);
 
         // channel used for a 2-way communication with the Routing Table module
@@ -86,7 +87,7 @@ impl Protocol {
         let protocol = Self {
             routes: Arc::new(Mutex::new(routes)),
             store_tuples: Arc::new(Mutex::new(HashMap::new())),
-            store_attributes:  Arc::new(Mutex::new(HashMap::new())),
+            store_attributes: Arc::new(Mutex::new(HashMap::new())),
             rpc: Arc::new(rpc),
             node: node.clone(),
         };
@@ -191,7 +192,7 @@ impl Protocol {
             parsed[1]
                 .parse::<u16>()
                 .expect("[FAILED] Protocol::craft_res --> Failed to parse Node port from address"),
-                nodeInfo
+            nodeInfo,
         );
         routes.update(src_node);
         drop(routes);
@@ -208,7 +209,7 @@ impl Protocol {
                 store.insert((*k).clone(), (*v).clone());
 
                 (network::Response::Ping, req)
-            },
+            }
             network::Request::Store_Attribute(ref k, ref v) => {
                 // ref is used to borrow k and v, which are the contents of req
                 // dbg!((*k).clone());
@@ -219,12 +220,12 @@ impl Protocol {
                     .lock()
                     .expect("[FAILED] Protocol::craft_res --> Failed to acquire mutex on Store");
                 store
-                .entry((*k).clone())
-                .or_insert_with(Vec::new)
-                .push((*v).clone());
+                    .entry((*k).clone())
+                    .or_insert_with(Vec::new)
+                    .push((*v).clone());
 
                 (network::Response::Ping, req)
-            },
+            }
             network::Request::FindNode(ref id) => {
                 let routes = self
                     .routes
@@ -246,9 +247,7 @@ impl Protocol {
 
                 match val {
                     Some(v) => (
-                        network::Response::FindValue(routing::FindValueResult::Value(
-                            (*v).clone(),
-                        )),
+                        network::Response::FindValue(routing::FindValueResult::Value((*v).clone())),
                         req,
                     ),
                     None => {
@@ -285,16 +284,18 @@ impl Protocol {
                             "[FAILED] Protocol::craft_res --> Failed to acquire mutex on Routes",
                         );
                         (
-                            network::Response::FindValueAttr(routing::FindValueResultAttribute::Nodes(
-                                routes.get_closest_nodes(&key, super::K_PARAM),
-                            )),
+                            network::Response::FindValueAttr(
+                                routing::FindValueResultAttribute::Nodes(
+                                    routes.get_closest_nodes(&key, super::K_PARAM),
+                                ),
+                            ),
                             req,
                         )
                     }
                 }
             }
-            }
         }
+    }
 
     fn reply(&self, packet_details: (network::Response, network::ReqWrapper)) {
         let msg = network::RpcMessage {
@@ -327,9 +328,12 @@ impl Protocol {
         }
     }
 
-    pub fn store_tuples(&self, dst: Node, key: Key, val:NodeInfo) -> bool {
-        let res =
-            utils::make_req_get_res(&self.rpc, network::Request::Store_Tuple(key, val), dst.clone());
+    pub fn store_tuples(&self, dst: Node, key: Key, val: NodeInfo) -> bool {
+        let res = utils::make_req_get_res(
+            &self.rpc,
+            network::Request::Store_Tuple(key, val),
+            dst.clone(),
+        );
 
         // since we get a ping, update our routing table
         let mut routes = self
@@ -345,11 +349,14 @@ impl Protocol {
         }
     }
 
-    pub fn store_attributes(&self, dst: Node, key: Key, val:DHTValueStruct) -> bool {
+    pub fn store_attributes(&self, dst: Node, key: Key, val: DHTValueStruct) -> bool {
         // dbg!(key.clone());
         // dbg!(val.clone());
-        let res =
-            utils::make_req_get_res(&self.rpc, network::Request::Store_Attribute(key, val), dst.clone());
+        let res = utils::make_req_get_res(
+            &self.rpc,
+            network::Request::Store_Attribute(key, val),
+            dst.clone(),
+        );
 
         // since we get a ping, update our routing table
         let mut routes = self
@@ -402,11 +409,16 @@ impl Protocol {
         }
     }
 
-    pub fn find_value_attributes(&self, dst: Node, k: Key) -> Option<routing::FindValueResultAttribute> {
+    pub fn find_value_attributes(
+        &self,
+        dst: Node,
+        k: Key,
+    ) -> Option<routing::FindValueResultAttribute> {
         // dbg!(dst.clone());
         // dbg!(k.clone());
         // dbg!("there");
-        let res = utils::make_req_get_res(&self.rpc, network::Request::FindValueAttr(k), dst.clone());
+        let res =
+            utils::make_req_get_res(&self.rpc, network::Request::FindValueAttr(k), dst.clone());
 
         let mut routes = self
             .routes
@@ -571,7 +583,10 @@ impl Protocol {
         (None, ret)
     }
 
-    pub fn value_lookup_attributes(&self, k: Key) -> (Option<Vec<DHTValueStruct>>, Vec<routing::NodeAndDistance>) {
+    pub fn value_lookup_attributes(
+        &self,
+        k: Key,
+    ) -> (Option<Vec<DHTValueStruct>>, Vec<routing::NodeAndDistance>) {
         // NOTE: k and key are two different things, one is a string used to search for the corresponding value while the other is a key::Key
         // dbg!("here");
         // dbg!(k);
@@ -654,7 +669,10 @@ impl Protocol {
         let key = get_attribute_key(attribute, value);
         let candidates = self.nodes_lookup(&key);
         // dbg!(candidates.clone());
-        let dht_value = DHTValueStruct { key: self.node.id, value:value};
+        let dht_value = DHTValueStruct {
+            key: self.node.id,
+            value: value,
+        };
         // dbg!(dht_value.clone());
         for routing::NodeAndDistance(node, _) in candidates {
             let protocol_clone = self.clone();
@@ -667,7 +685,7 @@ impl Protocol {
         }
     }
 
-    pub fn put_tuple(&self, key : Key, value : NodeInfo) {
+    pub fn put_tuple(&self, key: Key, value: NodeInfo) {
         let candidates = self.nodes_lookup(&key);
 
         for routing::NodeAndDistance(node, _) in candidates {
@@ -708,8 +726,7 @@ impl Protocol {
             v
         })
     }
-    pub fn get_best_fit(&self, query : Query)  {
-        dbg!("here");
+    pub fn get_best_fit(&self, query: Query) -> Option<NodeInfo> {
         // debug(que)
         let higher_storage = get_higher_storage_enums(query.storage);
         let higher_ram = get_higher_ram_enums(query.ram);
@@ -719,13 +736,12 @@ impl Protocol {
         let mut shared_bucket = SharedBucket::new();
 
         for storage in higher_storage {
-            let current_key = get_attribute_key_from_enum("storage".to_string(),storage);
+            let current_key = get_attribute_key_from_enum("storage".to_string(), storage);
             let (val, mut nodes) = self.value_lookup_attributes(current_key.clone());
             if let Some(value) = val {
                 dbg!("Value is: {:?}", value.clone());
                 for nodes in value {
                     let (node_info, mut nodes) = self.value_lookup_tuples(nodes.key.clone());
-                    dbg!("jhjh");
                     // dbg!(node_info.clon);
 
                     if let Some(node_info) = node_info.clone() {
@@ -735,9 +751,8 @@ impl Protocol {
                         }
                     } else {
                         // Handle the case when node_info is None
-                    }                
+                    }
                 }
-
             } else {
                 // dbg!("Value is None");
             }
@@ -746,11 +761,10 @@ impl Protocol {
         // handles.push(handle);
         // dbg!(shared_bucket_clone);
 
-
         // let shared_bucket_ram = Arc::clone(&shared_bucket);
         // let handle_ram = thread::spawn(move || {
         for ram in higher_ram {
-            let current_key = get_attribute_key_from_enum("ram".to_string(),ram);
+            let current_key = get_attribute_key_from_enum("ram".to_string(), ram);
             let (val, mut nodes) = self.value_lookup_attributes(current_key.clone());
             if let Some(value) = val {
                 // dbg!("Value is: {:?}", value.clone());
@@ -760,13 +774,11 @@ impl Protocol {
                         if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             // Your code here
                             shared_bucket.add_to_bucket(node_info.clone());
-
                         }
                     } else {
                         // Handle the case when node_info is None
-                    }                
+                    }
                 }
-
             } else {
                 // dbg!("Value is None");
             }
@@ -774,12 +786,11 @@ impl Protocol {
         // });
         // handles.push(handle_ram);
 
-
         // dbg!("virtual_cpu");
         // let shared_bucket_cpu = Arc::clone(&shared_bucket);
         // let handle_cpu = thread::spawn(move || {
         for cpu in higher_cpu_cores {
-            let current_key = get_attribute_key_from_enum("virtual_cpu".to_string(),cpu);
+            let current_key = get_attribute_key_from_enum("virtual_cpu".to_string(), cpu);
             let (val, mut nodes) = self.value_lookup_attributes(current_key.clone());
             if let Some(value) = val {
                 // dbg!("Value is: {:?}", value.clone());
@@ -788,14 +799,12 @@ impl Protocol {
                     if let Some(node_info) = node_info.clone() {
                         if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             // Your code here
-                        shared_bucket.add_to_bucket(node_info.clone());
-
+                            shared_bucket.add_to_bucket(node_info.clone());
                         }
                     } else {
                         // Handle the case when node_info is None
-                    }                
+                    }
                 }
-
             } else {
                 // dbg!("Value is None");
             }
@@ -807,7 +816,7 @@ impl Protocol {
         // let shared_bucket_arch_image = Arc::clone(&shared_bucket);
         // let handle_arch_image = thread::spawn(move || {
         for archs in higher_archs_images {
-            let current_key = get_attribute_key_from_enum("arm_image".to_string(),archs);
+            let current_key = get_attribute_key_from_enum("arm_image".to_string(), archs);
             // dbg!(current_key.clone());
             let (val, mut nodes) = self.value_lookup_attributes(current_key.clone());
             // dbg!(val);
@@ -818,33 +827,22 @@ impl Protocol {
                     if let Some(node_info) = node_info.clone() {
                         if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             // Your code here
-                        shared_bucket.add_to_bucket(node_info.clone());
-
+                            shared_bucket.add_to_bucket(node_info.clone());
                         }
                     } else {
                         // Handle the case when node_info is None
-                    }                
+                    }
                 }
             } else {
                 // dbg!("Value is None");
             }
         }
         // });
-    dbg!(shared_bucket.clone());
 
-        let best_fit = shared_bucket.bucket
-        .iter()
-        .min_by_key(|node_info| node_info.score(&query));
-
-        match best_fit {
-            Some(node_info) => {
-                println!("Best fit: {:?}", node_info);
-                println!("Score: {}", node_info.score(&query));
-            }
-            None => {
-                println!("No suitable fit found.");
-            }
-        }
-
+        shared_bucket
+            .bucket
+            .iter()
+            .min_by_key(|node_info| node_info.score(&query))
+            .cloned()
     }
 }
