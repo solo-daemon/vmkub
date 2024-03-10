@@ -10,7 +10,7 @@ for ((i = 0; i < ${arraylength}; i++)); do
 		wget https://download.qemu.org/qemu-8.2.2.tar.xz
 		tar xvJf qemu-8.2.2.tar.xz
 		cd qemu-8.2.2
-		./configure --enable-slirp
+		./configure --enable-slirp --target-list="x86_64 softmmu"
 		make
 	fi
 done
