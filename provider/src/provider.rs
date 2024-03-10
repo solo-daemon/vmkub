@@ -8,13 +8,14 @@ use kademlia_dht::utils;
 use std::error::Error;
 use std::{thread, time};
 
-pub fn add_provider_to_network(storage: u32, ram: u32, cpu_cores: u32) {
+pub fn add_provider_to_network(storage: u32, ram: u32, cpu_cores: u32, wallet_addr: String) {
     let rootNodeInfo = NodeInfo {
         storage: 100,
         ram: 8,
         cpu_cores: 2,
         arch_images: 0,
         ip: "10.11.1.59".to_string(),
+        wallet_address : "1".to_string(),
     };
     let nodeInfo = NodeInfo {
         storage,
@@ -22,6 +23,7 @@ pub fn add_provider_to_network(storage: u32, ram: u32, cpu_cores: u32) {
         cpu_cores,
         arch_images: 0,
         ip: utils::get_local_ip().unwrap(),
+        wallet_address : wallet_addr
     };
 
     let root = Node::new(rootNodeInfo.ip.clone(), 7999, rootNodeInfo.clone());

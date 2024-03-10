@@ -44,6 +44,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     let cpu_cores: u32 = get_integer_input();
     println!("Please enter the amount of storage (in GB):");
     let storage: u32 = get_integer_input();
+    println!("Please enter your wallet address:");
+    let mut wall_addr = String::new();
+
+    io::stdin()
+        .read_line(&mut wall_addr)
+        .expect("Failed to read line");
+
+    // Trim the newline character at the end if you need to
+    let wall_addr = wall_addr.trim();
 
     let handle = thread::spawn(move || {
         println!("Starting vm...");
@@ -53,7 +62,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     });
     let handle2 = thread::spawn(move || {
         println!("Adding you to the network");
-        add_provider_to_network(storage, ram, cpu_cores);
+        add_provider_to_network(storage, ram, cpu_cores, wall_addr);
     });
     handle.join().unwrap();
     handle2.join().unwrap();

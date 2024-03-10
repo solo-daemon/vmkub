@@ -13,7 +13,7 @@ const NET_SIZE: usize = 5;
 async fn test_big_net() {
 	let mut interfaces: Vec<Protocol> = Vec::with_capacity(NET_SIZE);
 	let mut base_port = 8000;
-	let nodeInfo  = NodeInfo { storage : 100 , ram:8, cpu_cores:2, arch_images:0, ip : utils::get_local_ip().unwrap()};
+	let nodeInfo  = NodeInfo { storage : 100 , ram:8, cpu_cores:2, arch_images:0, ip : utils::get_local_ip().unwrap(), wallet_address : "0".to_string()};
 
 	let root = Node::new(utils::get_local_ip().unwrap(), 7999,nodeInfo.clone());
 	dbg!(root.clone());
@@ -21,45 +21,45 @@ async fn test_big_net() {
 
 	// root_interface.put("MAIN_KEY".to_owned(), "MAIN_VALUE".to_owned());
 
-	for i in 0..(NET_SIZE - 1) {
-		let nodeInfo  = NodeInfo { storage : ((i+1)*20) as u32, ram: (i+1) as u32, cpu_cores:(i+1) as u32, arch_images:0, ip: utils::get_local_ip().unwrap()};
-		let node = Node::new(utils::get_local_ip().unwrap(), base_port, nodeInfo.clone());
+	// for i in 0..(NET_SIZE - 1) {
+	// 	let nodeInfo  = NodeInfo { storage : ((i+1)*20) as u32, ram: (i+1) as u32, cpu_cores:(i+1) as u32, arch_images:0, ip: utils::get_local_ip().unwrap(), wallet_address : "0".to_string()};
+	// 	let node = Node::new(utils::get_local_ip().unwrap(), base_port, nodeInfo.clone());
 
-		interfaces.push(Protocol::new(node.ip, node.port, node.info, Some(root.clone())));
-		println!(
-			"[+] Created interface for index: {} on port: {}",
-			i, base_port
-		);
+	// 	interfaces.push(Protocol::new(node.ip, node.port, node.info, Some(root.clone())));
+	// 	println!(
+	// 		"[+] Created interface for index: {} on port: {}",
+	// 		i, base_port
+	// 	);
 
-		base_port += 1;
-	}
+	// 	base_port += 1;
+	// }
 
-	for (index, interface) in interfaces.iter().enumerate() {
-		println!("{}",interface.node.info.storage);
-		println!("[+] Putting <key, value> pair for index: {}", index);
+	// for (index, interface) in interfaces.iter().enumerate() {
+	// 	println!("{}",interface.node.info.storage);
+	// 	println!("[+] Putting <key, value> pair for index: {}", index);
 
-		// attributes ka keys hai yeh
-		let key = get_attribute_key("storage".to_string(), interface.node.info.storage);
-		println!(" storage {:?}", key);
-		interface.put_attributes("storage".to_string(), interface.node.info.storage);
-		interface.put_attributes("ram".to_string(), interface.node.info.ram);
-		interface.put_attributes("virtual_cpu".to_string(), interface.node.info.cpu_cores);
-		interface.put_attributes("arm_image".to_string(), interface.node.info.arch_images);
+	// 	// attributes ka keys hai yeh
+	// 	let key = get_attribute_key("storage".to_string(), interface.node.info.storage);
+	// 	println!(" storage {:?}", key);
+	// 	interface.put_attributes("storage".to_string(), interface.node.info.storage);
+	// 	interface.put_attributes("ram".to_string(), interface.node.info.ram);
+	// 	interface.put_attributes("virtual_cpu".to_string(), interface.node.info.cpu_cores);
+	// 	interface.put_attributes("arm_image".to_string(), interface.node.info.arch_images);
 
-		// let key_2 = get_attribute_key("ram".to_string(), interface.node.info.ram);
-		// println!("ram key {:?}", key_2);
+	// 	// let key_2 = get_attribute_key("ram".to_string(), interface.node.info.ram);
+	// 	// println!("ram key {:?}", key_2);
 
-		// let key_3 = get_attribute_key("virtual_cpu".to_string(), interface.node.info.cpu_cores);
-		// println!(" cpu_cores {:?}", key_3);
+	// 	// let key_3 = get_attribute_key("virtual_cpu".to_string(), interface.node.info.cpu_cores);
+	// 	// println!(" cpu_cores {:?}", key_3);
 
-		// let key_4 = get_attribute_key("arm_image".to_string(), interface.node.info.arch_images);
-		// println!(" arch_image {:?}", key_4);
+	// 	// let key_4 = get_attribute_key("arm_image".to_string(), interface.node.info.arch_images);
+	// 	// println!(" arch_image {:?}", key_4);
 		
-		// yeh hoga tumahara nodes struct ka keys 
-		interface.put_tuple(interface.node.id, interface.node.info.clone());
+	// 	// yeh hoga tumahara nodes struct ka keys 
+	// 	interface.put_tuple(interface.node.id, interface.node.info.clone());
 		
-		// interface.put(format!("key_{}", index), format!("value_{}", index));
-	}
+	// 	// interface.put(format!("key_{}", index), format!("value_{}", index));
+	// }
 
 	// ideally ek keval client wala ko chalana chaiye
 	// for (index, interface) in interfaces.iter().enumerate() {

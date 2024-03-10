@@ -19,8 +19,11 @@ pub struct NodeInfo {
     // THe name of the arch image. 
     pub arch_images: u32,
 
+    // The ip address of the current node
     pub ip: String,
     
+    // wallet address to which payment will be made
+    pub wallet_address : String,
 }
 
 impl NodeInfo {
@@ -37,8 +40,8 @@ impl fmt::Display for NodeInfo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Storage: {}GB, RAM: {}GB, CPU Cores: {}, Arch Image: {}, Ip : {}",
-            self.storage, self.ram, self.cpu_cores, self.arch_images, self.ip
+            "Storage: {}GB, RAM: {}GB, CPU Cores: {}, Arch Image: {}, Ip : {}, wallet_address : {}",
+            self.storage, self.ram, self.cpu_cores, self.arch_images, self.ip,self.wallet_address
         )
     }
 }

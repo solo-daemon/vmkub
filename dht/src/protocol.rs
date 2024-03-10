@@ -185,7 +185,7 @@ impl Protocol {
         let split = req.src.split(":");
         let parsed: Vec<&str> = split.collect();
         
-        let nodeInfo  = NodeInfo { storage:100, ram:8, cpu_cores:2, arch_images:0, ip : "127.0.0.1".to_string()};
+        let nodeInfo  = NodeInfo { storage:100, ram:8, cpu_cores:2, arch_images:0, ip : "127.0.0.1".to_string(), wallet_address: "000".to_string()};
         let src_node = Node::new(
             parsed[0].to_string(),
             parsed[1]
