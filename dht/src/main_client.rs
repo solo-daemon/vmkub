@@ -14,20 +14,22 @@ const BIG_TEST: bool = true;
 const NET_SIZE: usize = 2;
 
 async fn test_big_net() {
-    let mut base_port = 8000;
-    let root_nodeInfo = NodeInfo {
+    let mut base_port = 8100;
+    let rootNodeInfo = NodeInfo {
         storage: 100,
         ram: 8,
         cpu_cores: 2,
         arch_images: 0,
+        ip : "10.11.0.207".to_string()
     };
 
-    let root = Node::new("10.11.1.59".to_string(), 7999, root_nodeInfo.clone());
+    let root = Node::new(rootNodeInfo.ip.clone(), 7999, rootNodeInfo.clone());
     let nodeInfo = NodeInfo {
         storage: 100,
         ram: 5,
-        cpu_cores: 5,
+        cpu_cores: 2,
         arch_images: 0,
+        ip: utils::get_local_ip().unwrap()
     };
 
     let node = Node::new(utils::get_local_ip().unwrap(), base_port, nodeInfo.clone());

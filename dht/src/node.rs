@@ -1,9 +1,10 @@
 use super::key::Key;
 use std::fmt;
+// use std::ce
 use super::attributes::Query;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Serialize, Deserialize, Eq, PartialEq, Hash, Copy)]
+#[derive(Clone, Debug, Serialize, Deserialize, Eq, PartialEq, Hash)]
 
 pub struct NodeInfo {
     // storage of the machine of the vm in GBs.
@@ -17,6 +18,9 @@ pub struct NodeInfo {
 
     // THe name of the arch image. 
     pub arch_images: u32,
+
+    pub ip: String,
+    
 }
 
 impl NodeInfo {
@@ -33,8 +37,8 @@ impl fmt::Display for NodeInfo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Storage: {}GB, RAM: {}GB, CPU Cores: {}, Arch Image: {}",
-            self.storage, self.ram, self.cpu_cores, self.arch_images
+            "Storage: {}GB, RAM: {}GB, CPU Cores: {}, Arch Image: {}, Ip : {}",
+            self.storage, self.ram, self.cpu_cores, self.arch_images, self.ip
         )
     }
 }

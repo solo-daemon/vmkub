@@ -185,7 +185,7 @@ impl Protocol {
         let split = req.src.split(":");
         let parsed: Vec<&str> = split.collect();
         
-        let nodeInfo  = NodeInfo { storage:100, ram:8, cpu_cores:2, arch_images:0 };
+        let nodeInfo  = NodeInfo { storage:100, ram:8, cpu_cores:2, arch_images:0, ip : "127.0.0.1".to_string()};
         let src_node = Node::new(
             parsed[0].to_string(),
             parsed[1]
@@ -726,10 +726,10 @@ impl Protocol {
                 for nodes in value {
                     let (node_info, mut nodes) = self.value_lookup_tuples(nodes.key.clone());
                     dbg!("jhjh");
-                    dbg!(node_info);
+                    // dbg!(node_info.clon);
 
                     if let Some(node_info) = node_info.clone() {
-                        if is_node_greater_than_query(node_info, query.clone()) {
+                        if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             dbg!("Achintya");
                             shared_bucket.add_to_bucket(node_info.clone());
                         }
@@ -757,7 +757,7 @@ impl Protocol {
                 for nodes in value {
                     let (node_info, mut nodes) = self.value_lookup_tuples(nodes.key.clone());
                     if let Some(node_info) = node_info.clone() {
-                        if is_node_greater_than_query(node_info, query.clone()) {
+                        if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             // Your code here
                             shared_bucket.add_to_bucket(node_info.clone());
 
@@ -786,7 +786,7 @@ impl Protocol {
                 for nodes in value {
                     let (node_info, mut nodes) = self.value_lookup_tuples(nodes.key.clone());
                     if let Some(node_info) = node_info.clone() {
-                        if is_node_greater_than_query(node_info, query.clone()) {
+                        if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             // Your code here
                         shared_bucket.add_to_bucket(node_info.clone());
 
@@ -816,7 +816,7 @@ impl Protocol {
                 for nodes in value {
                     let (node_info, mut nodes) = self.value_lookup_tuples(nodes.key.clone());
                     if let Some(node_info) = node_info.clone() {
-                        if is_node_greater_than_query(node_info, query.clone()) {
+                        if is_node_greater_than_query(node_info.clone(), query.clone()) {
                             // Your code here
                         shared_bucket.add_to_bucket(node_info.clone());
 
