@@ -15,30 +15,33 @@ const NET_SIZE: usize = 2;
 
 async fn test_big_net() {
     let mut base_port = 8000;
-    let nodeInfo = NodeInfo {
+    let root_nodeInfo = NodeInfo {
         storage: 100,
         ram: 8,
         cpu_cores: 2,
         arch_images: 0,
     };
 
-    let root = Node::new("10.11.1.59".to_string(), 7999, nodeInfo.clone());
-
+    let root = Node::new("10.11.1.59".to_string(), 7999, root_nodeInfo.clone());
     let nodeInfo = NodeInfo {
-        storage: 120,
-        ram: 6,
-        cpu_cores: 2,
+        storage: 100,
+        ram: 5,
+        cpu_cores: 5,
         arch_images: 0,
     };
+
     let node = Node::new(utils::get_local_ip().unwrap(), base_port, nodeInfo.clone());
 
-    let interface = Protocol::new(node.ip, node.port, node.info, Some(root.clone()));
-    let key = get_attribute_key("storage".to_string(), interface.node.info.storage);
-    interface.put_attributes("storage".to_string(), interface.node.info.storage);
-    interface.put_attributes("ram".to_string(), interface.node.info.ram);
-    interface.put_attributes("virtual_cpu".to_string(), interface.node.info.cpu_cores);
-    interface.put_attributes("arm_image".to_string(), interface.node.info.arch_images);
-    interface.put_tuple(interface.node.id, interface.node.info);
+    let interfaces = Protocol::new(node.ip, node.port, node.info, Some(root.clone()));
+
+    base_port += 1;
+    let req = Query {
+        storage: interfaces.node.info.storage,
+        ram: interfaces.node.info.ram,
+        cpu_cores: interfaces.node.info.cpu_cores,
+        arch_images: interfaces.node.info.arch_images,
+    };
+    interfaces.get_best_fit(req);
 
     // Introduce a loop to keep the program alive
     loop {
